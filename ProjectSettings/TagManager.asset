@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Obstacle
+  - Tree
   layers:
   - Default
   - TransparentFX
@@ -49,4 +52,7 @@ TagManager:
     locked: 0
   - name: SortingLayer3
     uniqueID: 3833095013
+    locked: 0
+  - name: Canvas
+    uniqueID: 321739647
     locked: 0

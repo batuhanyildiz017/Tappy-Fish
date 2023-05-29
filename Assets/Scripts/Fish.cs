@@ -10,6 +10,7 @@ public class Fish : MonoBehaviour
     int angle;
     int maxAngle = 20;
     int minAngle = -60;
+    public Score score;
     private void Awake()
     {
         speed = 9f;
@@ -18,7 +19,21 @@ public class Fish : MonoBehaviour
     {
         rgb = GetComponent<Rigidbody2D>();
 
-        //speed = 9f;
+        
+    }
+    private void FixedUpdate()
+    {
+        if (rgb.velocity.y > 0)
+        {
+            if (angle <= maxAngle)
+                angle += 4;
+        }
+        else if (rgb.velocity.y < -2.5f)
+        {
+            if (angle > minAngle)
+                angle -= 2;
+        }
+        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
     // Update is called once per frame
@@ -28,16 +43,14 @@ public class Fish : MonoBehaviour
         {
             rgb.velocity =new Vector2(rgb.velocity.x, speed);
         }
-        if (rgb.velocity.y>0)
+        
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
         {
-            if(angle <= maxAngle)
-            angle += 4;
+            //Debug.Log("Scored");
+            score.Scored();
         }
-        else if (rgb.velocity.y < -2.5f)
-        {
-            if(angle>minAngle)
-            angle -= 2;
-        }
-        transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
