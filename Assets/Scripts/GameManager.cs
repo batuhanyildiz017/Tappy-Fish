@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static Vector2 bottomleft;
+    public static bool gameOver;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -12,7 +13,11 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+        gameOver=false;
+    }
+    public void GameOver()
+    {
+        gameOver=true;
     }
 
     // Update is called once per frame
