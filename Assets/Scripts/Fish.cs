@@ -16,7 +16,8 @@ public class Fish : MonoBehaviour
     public Sprite fishDied;
     SpriteRenderer sp;
     Animator anim;
-
+    public ObstacleSpawner obsSpawn;
+    [SerializeField]AudioSource swim,hit,point;
     private void Awake()
     {
         speed = 9f;
@@ -24,6 +25,7 @@ public class Fish : MonoBehaviour
     void Start()
     {
         rgb = GetComponent<Rigidbody2D>();
+        rgb.gravityScale = 0;
         sp = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
     }
@@ -43,7 +45,21 @@ public class Fish : MonoBehaviour
         //rgb.velocity=Vector2.zero;
         if (Input.GetMouseButtonDown(0) && GameManager.gameOver==false)
         {
-            rgb.velocity = new Vector2(rgb.velocity.x, speed);
+            swim.Play();
+            if (GameManager.gameStarted == false)
+            {
+                rgb.gravityScale = 1.3f;
+                rgb.velocity = Vector2.zero;
+                rgb.velocity = new Vector2(rgb.velocity.x, speed);
+                obsSpawn.InstantiateObstacle();
+                gameManager.GameHasStrated();
+            }
+            else
+            {
+                rgb.velocity = Vector2.zero;
+                rgb.velocity = new Vector2(rgb.velocity.x, speed);
+            }
+                
         }
     }
     void FishRotation()
@@ -67,10 +83,14 @@ public class Fish : MonoBehaviour
         {
             //Debug.Log("Scored");
             score.Scored();
+            point.Play();
         }
         else if (collision.CompareTag("Tree"))
         {
+            FishDieEffect();
             //game over
+            gameManager.GameOver();
+            GameOver();
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,12 +99,17 @@ public class Fish : MonoBehaviour
         {
             if (GameManager.gameOver==false)
             {
+                FishDieEffect();
                 //game over
                 gameManager.GameOver();
                 GameOver();
             }
 
         }
+    }
+    public void FishDieEffect()
+    {
+        hit.Play();
     }
     void GameOver()
     {
